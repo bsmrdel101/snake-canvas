@@ -9,6 +9,7 @@ declare const keysPressed: any;
 
 type Sprite = ImgSprite | BoxSprite;
 type ColDir = 'T' | 'B' | 'L' | 'R' | null;
+type Col = BoxCol;
 
 type Vec2 = {
   x: number

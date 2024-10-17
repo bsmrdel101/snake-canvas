@@ -1,11 +1,13 @@
 import GameObject from "../gameObjects/GameObject"
 
 export default class BoxCol {
-  offset: Vec2
-  scale: Vec2
-  canCollide = true
-  isTrigger = false
-  parent: GameObject
+  offset: Vec2;
+  scale: Vec2;
+  canCollide = true;
+  isTrigger = false;
+  parent: GameObject;
+  private isColliding = false;
+  onCol: (colisionPos: ColDir, obj: GameObject) => void;
 
   constructor(offset?: Vec2, scale?: Vec2) {
     this.offset = offset;
@@ -14,11 +16,11 @@ export default class BoxCol {
 
   checkCollisions(objects: GameObject[]) {
     objects.forEach((obj) => {
-      if (this.parent !== obj && !this.parent.isColliding) {
+      if (this.parent !== obj && !this.isColliding) {
         const colisionPos = this.handleCollision(this.parent, obj);
-        if (colisionPos && this.parent.onCol) {
-          this.parent.isColliding = true;
-          this.parent.onCol(colisionPos, obj);
+        if (colisionPos && this.onCol) {
+          this.isColliding = true;
+          this.onCol(colisionPos, obj);
         }
       }
     });

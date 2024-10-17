@@ -1,23 +1,29 @@
+import BoxCol from "../engine/classes/colliders/BoxCol";
 import GameObject from "../engine/classes/gameObjects/GameObject";
-import { Sprites } from "../sprites";
+import { clamp } from "../utils";
 
 
 export default class Player extends GameObject {
+  moveSpeed = 1;
+  maxSpeed = 30;
+
   constructor() {
-    const sprites = Sprites();
-    super(sprites.player);
-    this.hasGravity = true;
-    
-    this.onCol = (side: string, obj: GameObject) => {
-      this.handleCollision(side, obj);
-    }
+    super(new BoxCol(getCenter()));
+
+    update(() => {
+      this.handleMovement();
+    });
   }
 
-  private handleCollision(side: string, obj: GameObject) {
-    console.log('collide');
-    if (side === 'B') {
-      this.sprite.pos.y = obj.sprite.pos.y - this.sprite.scale.y;
-      this.velocity.y = 0;
+  private handleMovement = () => {
+    this.velocity.x = clamp(this.velocity.x + this.moveSpeed, 0, this.maxSpeed);
+
+    if (keysPressed['a'] || keysPressed['ArrowLeft']) {
+      this.sprite.pos.x -= this.velocity.x / this.friction;
+    } else if (keysPressed['d'] || keysPressed['ArrowRight']) {
+      this.sprite.pos.x += this.velocity.x / this.friction;
+    } else {
+      this.velocity.x = 0;
     }
-  }
+  };
 }

@@ -1,4 +1,4 @@
-import { main } from "../game";
+import { main } from "..";
 import GameObject from "./classes/gameObjects/GameObject";
 import { gameObjectManager } from "./classes/gameObjects/GameObjectManager";
 
